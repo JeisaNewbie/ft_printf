@@ -1,5 +1,24 @@
-#include <limits.h>
-typedef struct s_flag{
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jhwang2 <jhwang2@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/25 20:38:41 by jhwang2           #+#    #+#             */
+/*   Updated: 2022/10/17 19:26:26 by jhwang2          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
+
+# include <stdarg.h>
+# include <unistd.h>
+# include <limits.h>
+# include "./libft/libft.h"
+
+/*typedef struct s_flag{
 	int	left;
 	int	zeropad;
 	int	precision;
@@ -8,9 +27,17 @@ typedef struct s_flag{
 	int	sign;
 }t_flag
 
-class typedef s_type{
-
-}type
+typedef enum {
+	c = char,
+	s = char *,
+	p = void *,
+	d = int,
+	i = int,
+	u = int,
+	x = int,
+	X = int,
+	% = char
+} types
 
 typedef enum {
 	left = 1,
@@ -20,3 +47,17 @@ typedef enum {
 	blank,
 	sign
 } flags
+*/
+int		ft_printf(const char *str, ...);
+void    va_printf(va_list ap, char *str);
+void    cpy_type (va_list ap, char *str, int *str_len, char **ap_str);
+int		is_type(char c);
+//types	check_tnum (char type);
+//flags	check_fnum (char c);
+//flags	check_flags(t_flag **flag, char c);
+void    recursion(long long nb, char *str, int *str_len, char *base);
+void    ft_putnbr_h(long long n, char *str, int *str_len, char *base);
+void    ft_putnbr_base(int nbr, char *str, int *str_len, int upper);
+void    hexa_m(unsigned long long decimal, char *str, int *str_len, char *base);
+
+#endif

@@ -6,10 +6,10 @@
 /*   By: jhwang2 <jhwang2@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 21:56:40 by jhwang2           #+#    #+#             */
-/*   Updated: 2022/10/16 18:19:38 by jhwang2          ###   ########.fr       */
+/*   Updated: 2022/10/17 19:27:26 by jhwang2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-flags check_flags(t_flag **flag, char c)
+/*flags	check_flags(t_flag **flag, char c)
 {
 	if (c == '-')
 		(*flag)->left = 1;
@@ -23,10 +23,10 @@ flags check_flags(t_flag **flag, char c)
 		(*flag)->blank = 1;
 	if (c == '+')
 		(*flag)->sign = 1;
-	return (check_enum (c));
+	return (check_fnum (c));
 }
 
-flags check_enum (char c)
+flags	check_fnum(char c)
 {
 	if (c == '-')
 		return (1);
@@ -41,6 +41,33 @@ flags check_enum (char c)
 	if (c == '+')
 		return (6);
 }
+
+types	check_tnum(char type)
+{
+	types	tnum;
+
+	if (type == 'c')
+		return (1);
+	if (type == 's')
+		return (2);
+	if (type == 'p')
+		return (3);
+	if (type == 'd')
+		return (4);
+	if (type == 'i')
+		return (5);
+	if (type == 'u')
+		return (6);
+	if (type == 'd')
+		return (7);
+	if (type == 'x')
+		return (8);
+	if (type == 'X')
+		return (9);
+	if (type == '%')
+		return (10);
+}
+*/
 int	is_type(char c)
 {
 	if (c == 'c')
@@ -63,6 +90,28 @@ int	is_type(char c)
 		return (1);
 	return (0);
 }
+
+void	cpy_type(va_list ap, char *str, int *str_len, char **ap_str)
+{
+	if (**ap_str == 'c')
+		ft_putchar (va_arg (ap, char), str, str_len);
+	if (**ap_str == 's')
+		ft_putstr (va_arg (ap, char *), str, str_len);
+	if (**ap_str == 'p')
+		ft_putnbr_base (va_arg (ap, void *), str, str_len, 2);
+	if (**ap_str == 'd' || **ap_str == 'i')
+		ft_putnbr (va_arg (ap, int), str, str_len);
+	if (**ap_str == 'u')
+		ft_putnbr ((unsigned int)va_arg (ap, int), str, str_len);
+	if (**ap_str == 'x')
+		ft_putnbr_base (va_arg (ap, int), str, str_len, 0);
+	if (**ap_str == 'X')
+		ft_putnbr_base (va_arg (ap, int), str, str_len, 1);
+	if (**ap_str == '%')
+		str[*str_len] = '%';
+	(*ap_str)++;
+}
+
 void	va_printf(va_list ap, char *str)
 {
 	char	*ap_str;
@@ -76,20 +125,28 @@ void	va_printf(va_list ap, char *str)
 	{
 		if (*ap_str == '%')
 		{
-			if (is_type (++*ap_str))
-				cpy_type (ap,&str[str_len]);
-			else
-				cpy_flags (ap, &str[str_len]);
+			if (is_type (*(++ap_str)))
+				cpy_type (ap, str, &str_len, &ap_str);
+			//else
+			//	cpy_flags (ap, str, &str_len);
 		}
-		str[str_len++] = *ap_str++;
+		str[str_len++] = *ap_str;
+		ap_str++;
 	}
+	str[str_len] = '\0';
 }
+
 int	ft_printf(const char *str, ...)
 {
 	va_list	ap;
 	char	str[INT_MAX];
+	int		i;
 
+	i = 0;
 	va_start (ap, str);
 	va_printf (ap, str);
 	va_end (ap);
+	while (str[i])
+		write (1, str[i++], 1);
+	return (i);
 }
