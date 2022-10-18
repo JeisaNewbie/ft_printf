@@ -1,42 +1,38 @@
-SRCS	= ft_printf.c
+NAME = libftprintf.a
 
-SRCS_B	=
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror
+AR = ar rcs
+RM = rm -f
 
-OBJS	= ${SRCS:.c=.o}
+FILES = ft_printf \
 
-OBJS_B	= ${SRCS_B:.c=.o}
+LIBFT_DIR = ./Libft/
 
-NAME	= libftprintf.a
+SRCS_DIR = ./
+SRCS = $(addprefix $(SRCS_DIR), $(addsuffix .c, $(FILES)))
 
-RM 		= rm -f
+OBJS_DIR = ./
+OBJS = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(FILES)))
 
-AR		= ar rc
+.c.o: $(SRCS)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-define libft_call
-		cd libft && $(MAKE) $(1) && cd ..
-endef
+$(NAME): $(OBJS)
+	make all -C $(LIBFT_DIR)
+	cp Libft/libft.a $(NAME)
+	$(AR) $@ $^
 
-.c.o:
-		gcc -Wall -Wextra -Werror -c $< -o ${<:.c=.o}
-
-all:	${NAME}
-
-${NAME}:	${OBJS}
-		$(call libft_call, all)
-		${AR} ${NAME} ${OBJS}
-
-bonus: 		${OBJS_B}
-		$(call libft_call, all)
-		${AR} ${NAME} ${OBJS_B}
+all: $(NAME)
 
 clean:
-		$(call libft_call, clean)
-		${RM} ${OBJS} ${OBJS_B}
+	$(RM) $(OBJS)
+	make fclean -C $(LIBFT_DIR)
 
-fclean:		clean
-		$(call libft_call, fclean)
-		${RM}	${NAME}
+fclean: clean
+	$(RM) $(NAME)
+	make fclean -C $(LIBFT_DIR)
 
-re: 		fclean all
+re: fclean all
 
-.PHONY: 	all bonus clean fclean re
+.PHONY: all clean fclean re

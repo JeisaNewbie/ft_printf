@@ -6,7 +6,7 @@
 /*   By: jhwang2 <jhwang2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 20:38:41 by jhwang2           #+#    #+#             */
-/*   Updated: 2022/10/17 19:26:26 by jhwang2          ###   ########.fr       */
+/*   Updated: 2022/10/18 16:17:00 by jhwang2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <unistd.h>
 # include <limits.h>
 # include "./libft/libft.h"
+# include "ft_hexa.c"
+# include "ft_printf_utils.c"
 
 /*typedef struct s_flag{
 	int	left;
@@ -57,7 +59,12 @@ int		is_type(char c);
 //flags	check_flags(t_flag **flag, char c);
 void    recursion(long long nb, char *str, int *str_len, char *base);
 void    ft_putnbr_h(long long n, char *str, int *str_len, char *base);
-void    ft_putnbr_base(int nbr, char *str, int *str_len, int upper);
+void    ft_putnbr_base(long long nbr, char *str, int *str_len, int upper);
 void    hexa_m(unsigned long long decimal, char *str, int *str_len, char *base);
+void	ft_putstr(char *s, char *str, int *str_len);
+void	ft_putchar(char c, char *str, int *str_len);
+void	recursion_p(long long n, char *str, int *str_len);
+void	ft_putnbr(long long n, char *str, int *str_len);
+void    ft_putnbr_base_m(unsigned long long nbr, char *str, int *str_len);
 
 #endif

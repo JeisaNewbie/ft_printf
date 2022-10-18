@@ -6,7 +6,7 @@
 /*   By: jhwang2 <jhwang2@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 21:56:40 by jhwang2           #+#    #+#             */
-/*   Updated: 2022/10/17 19:12:39 by jhwang2          ###   ########.fr       */
+/*   Updated: 2022/10/18 16:17:51 by jhwang2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_putnbr_h(long long n, char *str, int *str_len, char *base)
 		recursion (n, str, str_len, base);
 }
 
-void	ft_putnbr_base(int nbr, char *str, int *str_len, int upper)
+void	ft_putnbr_base(long long nbr, char *str, int *str_len, int upper)
 {
 	char	upper_hexa[16];
 	char	lower_hexa[16];
@@ -48,8 +48,8 @@ void	ft_putnbr_base(int nbr, char *str, int *str_len, int upper)
 	number = 0;
 	while (number < 10)
 	{
-		upper_hexa[number] = number;
-		lower_hexa[number] = number;
+		upper_hexa[number] = number + '0';
+		lower_hexa[number] = number + '0';
 		number++;
 	}
 	while (number < 16)
@@ -59,11 +59,9 @@ void	ft_putnbr_base(int nbr, char *str, int *str_len, int upper)
 		number++;
 	}
 	if (upper)
-		ft_putnbr_h ((long long)nbr, str, str_len, upper_hexa);
-	else if (upper == 0)
-		ft_putnbr_h ((long long)nbr, str, str_len, lower_hexa);
+		ft_putnbr_h (nbr, str, str_len, upper_hexa);
 	else
-		hexa_m ((unsigned long long)nbr, str, str_len, lower_hexa);
+		ft_putnbr_h (nbr, str, str_len, lower_hexa);
 }
 
 void	hexa_m(unsigned long long decimal, char *str, int *str_len, char *base)

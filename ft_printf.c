@@ -6,9 +6,11 @@
 /*   By: jhwang2 <jhwang2@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 21:56:40 by jhwang2           #+#    #+#             */
-/*   Updated: 2022/10/17 19:27:26 by jhwang2          ###   ########.fr       */
+/*   Updated: 2022/10/18 16:21:37 by jhwang2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "ft_printf.h"
+
 /*flags	check_flags(t_flag **flag, char c)
 {
 	if (c == '-')
@@ -94,21 +96,21 @@ int	is_type(char c)
 void	cpy_type(va_list ap, char *str, int *str_len, char **ap_str)
 {
 	if (**ap_str == 'c')
-		ft_putchar (va_arg (ap, char), str, str_len);
-	if (**ap_str == 's')
+		ft_putchar (va_arg (ap, int), str, str_len);
+	else if (**ap_str == 's')
 		ft_putstr (va_arg (ap, char *), str, str_len);
-	if (**ap_str == 'p')
-		ft_putnbr_base (va_arg (ap, void *), str, str_len, 2);
-	if (**ap_str == 'd' || **ap_str == 'i')
+	else if (**ap_str == 'p')
+		ft_putnbr_base_m ((unsigned long long)va_arg (ap, void *), str, str_len);
+	else if (**ap_str == 'd' || **ap_str == 'i')
 		ft_putnbr (va_arg (ap, int), str, str_len);
-	if (**ap_str == 'u')
+	else if (**ap_str == 'u')
 		ft_putnbr ((unsigned int)va_arg (ap, int), str, str_len);
-	if (**ap_str == 'x')
-		ft_putnbr_base (va_arg (ap, int), str, str_len, 0);
-	if (**ap_str == 'X')
-		ft_putnbr_base (va_arg (ap, int), str, str_len, 1);
-	if (**ap_str == '%')
-		str[*str_len] = '%';
+	else if (**ap_str == 'x')
+		ft_putnbr_base ((long long)va_arg (ap, int), str, str_len, 0);
+	else if (**ap_str == 'X')
+		ft_putnbr_base ((long long)va_arg (ap, int), str, str_len, 1);
+	else if (**ap_str == '%')
+		str[(*str_len)++] = '%';
 	(*ap_str)++;
 }
 
@@ -116,13 +118,13 @@ void	va_printf(va_list ap, char *str)
 {
 	char	*ap_str;
 	int		str_len;
-	int		ap_i;
 
-	ap_str = ap - 1;
+	ap_str = (char *)(ap - 1);
 	str_len = 0;
-	ap_i = 0;
 	while (*ap_str != '\0')
 	{
+		while (*ap_str != '%')
+			str[str_len++] = (*ap_str)++;
 		if (*ap_str == '%')
 		{
 			if (is_type (*(++ap_str)))
@@ -130,23 +132,21 @@ void	va_printf(va_list ap, char *str)
 			//else
 			//	cpy_flags (ap, str, &str_len);
 		}
-		str[str_len++] = *ap_str;
-		ap_str++;
 	}
 	str[str_len] = '\0';
 }
 
 int	ft_printf(const char *str, ...)
 {
-	va_list	ap;
-	char	str[INT_MAX];
-	int		i;
+	va_list		ap;
+	char		string[INT_MAX];
+	int			i;
 
 	i = 0;
 	va_start (ap, str);
-	va_printf (ap, str);
+	va_printf (ap, string);
 	va_end (ap);
-	while (str[i])
-		write (1, str[i++], 1);
+	while (string[i])
+		write (1, &string[i++], 1);
 	return (i);
 }
