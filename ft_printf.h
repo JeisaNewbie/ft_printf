@@ -17,8 +17,6 @@
 # include <unistd.h>
 # include <limits.h>
 # include "./libft/libft.h"
-# include "ft_hexa.c"
-# include "ft_printf_utils.c"
 
 /*typedef struct s_flag{
 	int	left;
@@ -51,7 +49,7 @@ typedef enum {
 } flags
 */
 int		ft_printf(const char *str, ...);
-void    va_printf(va_list ap, char *str);
+void    va_printf(va_list ap, char *str, char *original);
 void    cpy_type (va_list ap, char *str, int *str_len, char **ap_str);
 int		is_type(char c);
 //types	check_tnum (char type);

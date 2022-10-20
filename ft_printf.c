@@ -114,17 +114,20 @@ void	cpy_type(va_list ap, char *str, int *str_len, char **ap_str)
 	(*ap_str)++;
 }
 
-void	va_printf(va_list ap, char *str)
+void	va_printf(va_list ap, char *str, char *original)
 {
 	char	*ap_str;
 	int		str_len;
 
-	ap_str = (char *)(ap - 1);
+	ap_str = original;
 	str_len = 0;
 	while (*ap_str != '\0')
 	{
-		while (*ap_str != '%')
-			str[str_len++] = (*ap_str)++;
+		while (*ap_str != '%' && *ap_str != '\0')
+			{
+				str[str_len++] = *ap_str;
+				ap_str++;
+			}
 		if (*ap_str == '%')
 		{
 			if (is_type (*(++ap_str)))
@@ -139,12 +142,12 @@ void	va_printf(va_list ap, char *str)
 int	ft_printf(const char *str, ...)
 {
 	va_list		ap;
-	char		string[INT_MAX];
+	char		string[INT_MAX - 1];
 	int			i;
 
 	i = 0;
 	va_start (ap, str);
-	va_printf (ap, string);
+	va_printf (ap, string, (char *)str);
 	va_end (ap);
 	while (string[i])
 		write (1, &string[i++], 1);
