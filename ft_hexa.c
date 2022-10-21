@@ -6,40 +6,50 @@
 /*   By: jhwang2 <jhwang2@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 21:56:40 by jhwang2           #+#    #+#             */
-/*   Updated: 2022/10/18 16:17:51 by jhwang2          ###   ########.fr       */
+/*   Updated: 2022/10/21 21:19:41 by jhwang2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	recursion(long long nb, char *str, int *str_len, char *base)
+void	recursion_ph(long long nb, char *tmp, int *i, char *base)
 {
 	if (nb == 0)
 		return ;
-	recursion (nb / 16, str, str_len, base);
-	str[*str_len] = base[nb % 16];
-	(*str_len)++;
+	recursion_ph (nb / 16, tmp, i, base);
+	tmp[*i++] = base[nb % 16];
 }
 
-void	ft_putnbr_h(long long n, char *str, int *str_len, char *base)
+void	recursion_nh(long long nb, char *tmp, int *i, char *base)
 {
-	if (n == 0)
-	{
-		str[*str_len] = '0';
-		(*str_len)++;
-	}
-	else if (n < 0)
-	{
-		n *= -1;
-		str[*str_len] = '-';
-		(*str_len)++;
-		recursion (n, str, str_len, base);
-	}
-	else
-		recursion (n, str, str_len, base);
+	tmp[*i++] = '-';
+	n *= -1;
+	recursion_ph (n, tmp, i, base);
 }
 
-void	ft_putnbr_base(long long nbr, char *str, int *str_len, int upper)
+int	ft_putnbr_h(long long n, static char *string, char *base)
+{
+	char	*tmp;
+	int		i;
+
+	tmp = (char *)malloc (sizeof (char) * 12);
+	if (tmp == NULL)
+		return (0);
+	i = 0;
+	if (n == 0)
+		tmp[i++] = '0';
+	if (n < 0)
+		recursion_nh (n, tmp, &i, base);
+	else if (n > 0)
+		recursion_ph (n, tmp, &i, base);
+	tmp[i] = '\0';
+	string = ft_strjoin (string, tmp);
+	if (!string)
+		return (0);
+	return (1);
+}
+
+void	ft_putnbr_base(long long nbr, static char *string, int upper)
 {
 	char	upper_hexa[16];
 	char	lower_hexa[16];
@@ -59,24 +69,32 @@ void	ft_putnbr_base(long long nbr, char *str, int *str_len, int upper)
 		number++;
 	}
 	if (upper)
-		ft_putnbr_h (nbr, str, str_len, upper_hexa);
+		ft_putnbr_h (nbr, string, upper_hexa);
 	else
-		ft_putnbr_h (nbr, str, str_len, lower_hexa);
+		ft_putnbr_h (nbr, string, lower_hexa);
 }
 
-void	hexa_m(unsigned long long decimal, char *str, int *str_len, char *base)
+int	hexa_m(unsigned long long decimal, static char *string, char *base)
 {
-	str[(*str_len)++] = '0';
-	str[(*str_len)++] = 'x';
+	char	*tmp;
+	int		i;
+
+	tmp = (char *)malloc (sizeof (char) * 19);
+	if (tmp == NULL)
+		return (NULL);
+	i = 2;
+	str[0] = '0';
+	str[1] = 'x';
 	if (decimal == 0)
-	{
-		str[*str_len] = '0';
-		(*str_len)++;
-		return ;
-	}
+		tmp[i++] = '0';
 	while (decimal > 0)
 	{
-		str[(*str_len)++] = base[decimal % 16];
+		tmp[i++] = base[decimal % 16];
 		decimal = decimal / 16;
 	}
+	tmp[i] = '\0';
+	string = ft_strjoin (string, tmp);
+	if (!string)
+		return (0);
+	return (1);
 }

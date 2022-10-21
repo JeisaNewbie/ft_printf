@@ -6,7 +6,7 @@
 /*   By: jhwang2 <jhwang2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 20:38:41 by jhwang2           #+#    #+#             */
-/*   Updated: 2022/10/18 16:17:00 by jhwang2          ###   ########.fr       */
+/*   Updated: 2022/10/21 21:19:36 by jhwang2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,21 @@ typedef enum {
 } flags
 */
 int		ft_printf(const char *str, ...);
-void    va_printf(va_list ap, char *str, char *original);
-void    cpy_type (va_list ap, char *str, int *str_len, char **ap_str);
+int		va_printf(va_list ap, char **string, char *original);
+int		cpy_type (va_list ap, static char *string, int *i, char **ap_str);
 int		is_type(char c);
 //types	check_tnum (char type);
 //flags	check_fnum (char c);
 //flags	check_flags(t_flag **flag, char c);
-void    recursion(long long nb, char *str, int *str_len, char *base);
-void    ft_putnbr_h(long long n, char *str, int *str_len, char *base);
-void    ft_putnbr_base(long long nbr, char *str, int *str_len, int upper);
-void    hexa_m(unsigned long long decimal, char *str, int *str_len, char *base);
-void	ft_putstr(char *s, char *str, int *str_len);
-void	ft_putchar(char c, char *str, int *str_len);
-void	recursion_p(long long n, char *str, int *str_len);
-void	ft_putnbr(long long n, char *str, int *str_len);
-void    ft_putnbr_base_m(unsigned long long nbr, char *str, int *str_len);
+void    recursion_ph(long long nb, char *tmp, int *i, char *base);
+void    recursion_nh(long long nb, char *tmp, int *i, char *base);
+int		ft_putnbr_h(long long n, static char *string, char *base);
+void    ft_putnbr_base(long long nbr, static char *string, int upper);
+int		hexa_m(unsigned long long decimal, static char *string, char *base);
+int		ft_putstr(char *s, static char *string);
+void	recursion_p(long long n, char *tmp, int *i);
+void    recursion_n(long long n, char *tmp, int *i);
+int		ft_putnbr_p(long long n, static char *string);
+void    ft_putnbr_base_m(unsigned long long nbr, static char *string);
 
 #endif

@@ -1,37 +1,32 @@
-NAME = libftprintf.a
+NAME	=	libftprintf.a
+CC	=	cc
+INCLUDE	=	./ft_printf.h
+SRCS_DIR	=	./
+SRCS_NAME	=	ft_printf.c ft_hexa.c ft_printf_utils.c
+SRCS	=	$(addprefix $(SRCS_DIR),$(SRCS_NAME))
+OBJS	=	$(SRCS:.c=.o)
+CFLAGS := -Wall -Wextra -Werror
+RM := rm -f
+AR := ar
+ARFLAG := crs
+LIBFT_DIR := ./libft/
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
-AR = ar rcs
-RM = rm -f
+FLAGS	=	-Wall -Wextra -Werror
 
-FILES = ft_printf \
+all : $(NAME)
 
-LIBFT_DIR = ./Libft/
+$(NAME) : $(OBJS)
+	make -C $(LIBFT_DIR)
+	cp $(LIBFT_DIR)libft.a ./$(NAME)
+	$(AR) $(ARFLAG) $@ $^
 
-SRCS_DIR = ./
-SRCS = $(addprefix $(SRCS_DIR), $(addsuffix .c, $(FILES)))
-
-OBJS_DIR = ./
-OBJS = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(FILES)))
-
-.c.o: $(SRCS)
-	$(CC) $(CFLAGS) -c -o $@ $<
-
-$(NAME): $(OBJS)
-	make all -C $(LIBFT_DIR)
-	cp Libft/libft.a $(NAME)
-	$(AR) $@ $^
-
-all: $(NAME)
-
+%.o : %.c
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c $< -o $@
 clean:
-	$(RM) $(OBJS)
-	make fclean -C $(LIBFT_DIR)
+	rm -f $(OBJS)
 
-fclean: clean
-	$(RM) $(NAME)
-	make fclean -C $(LIBFT_DIR)
+fclean : clean
+	rm -f $(NAME)
 
 re: fclean all
 
