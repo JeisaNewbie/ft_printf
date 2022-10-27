@@ -2,7 +2,7 @@ NAME	=	libftprintf.a
 CC	=	cc
 INCLUDE	=	./ft_printf.h
 SRCS_DIR	=	./
-SRCS_NAME	=	ft_printf.c ft_hexa.c ft_printf_utils.c
+SRCS_NAME	=	ft_printf.c ft_hexa.c ft_printf_utils.c ft_putchar.c ft_putstr.c ft_strjoin.c
 SRCS	=	$(addprefix $(SRCS_DIR),$(SRCS_NAME))
 OBJS	=	$(SRCS:.c=.o)
 CFLAGS := -Wall -Wextra -Werror

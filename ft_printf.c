@@ -6,70 +6,11 @@
 /*   By: jhwang2 <jhwang2@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 21:56:40 by jhwang2           #+#    #+#             */
-/*   Updated: 2022/10/21 21:19:33 by jhwang2          ###   ########.fr       */
+/*   Updated: 2022/10/27 17:47:55 by jhwang2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
 
-/*flags	check_flags(t_flag **flag, char c)
-{
-	if (c == '-')
-		(*flag)->left = 1;
-	if (c == '0')
-		(*flag)->zeropad = 1;
-	if (c == '.')
-		(*flag)->precision = 1;
-	if (c == '#')
-		(*flag)->altform = 1;
-	if (c == ' ')
-		(*flag)->blank = 1;
-	if (c == '+')
-		(*flag)->sign = 1;
-	return (check_fnum (c));
-}
-
-flags	check_fnum(char c)
-{
-	if (c == '-')
-		return (1);
-	if (c == '0')
-		return (2);
-	if (c == '.')
-		return (3);
-	if (c == '#')
-		return (4);
-	if (c == ' ')
-		return (5);
-	if (c == '+')
-		return (6);
-}
-
-types	check_tnum(char type)
-{
-	types	tnum;
-
-	if (type == 'c')
-		return (1);
-	if (type == 's')
-		return (2);
-	if (type == 'p')
-		return (3);
-	if (type == 'd')
-		return (4);
-	if (type == 'i')
-		return (5);
-	if (type == 'u')
-		return (6);
-	if (type == 'd')
-		return (7);
-	if (type == 'x')
-		return (8);
-	if (type == 'X')
-		return (9);
-	if (type == '%')
-		return (10);
-}
-*/
 int	is_type(char c)
 {
 	if (c == 'c')
@@ -93,36 +34,48 @@ int	is_type(char c)
 	return (0);
 }
 
-int	cpy_type(va_list ap, static char *string, int *i, char **ap_str)
+int	cpy_type(va_list ap, t_backup *backup, char *ap_str)
 {
-	if (**ap_str == 'c')
-		if (!ft_putchar (va_arg (ap, int), string))
-			return (0);
-	else if (**ap_str == 's')
-		if (!ft_putstr (va_arg (ap, char *), string))
-			return (0);
-	else if (**ap_str == 'p')
-		if (!ft_putnbr_base_m ((unsigned long long)va_arg (ap, void *), string))
-			return (0);
-	else if (**ap_str == 'd' || **ap_str == 'i')
-		if (!ft_putnbr_p ((long long)va_arg (ap, int), string))
-			return (0);
-	else if (**ap_str == 'u')
-		if (!ft_putnbr_p ((unsigned int)va_arg (ap, int), string))
-			return (0);
-	else if (**ap_str == 'x')
-		if (!ft_putnbr_base ((long long)va_arg (ap, int), string, 0))
-			return (0);
-	else if (**ap_str == 'X')
-		if (!ft_putnbr_base ((long long)va_arg (ap, int), string, 1))
-			return (0);
-	else if (**ap_str == '%')
-		if (!ft_putchar ('%', string))
-			return (0);
-	return (1);
+	if (*ap_str == 'c')
+		return (ft_putchar (va_arg (ap, int), backup));
+	else if (*ap_str == 's')
+		return (ft_putstr (va_arg (ap, char *), backup));
+	else if (*ap_str == 'p')
+		return (ft_putnbr_base_m ((unsigned long long)va_arg
+				(ap, void *), backup));
+	else if (*ap_str == 'd' || *ap_str == 'i')
+		return (ft_putnbr_p ((long long)va_arg (ap, int), backup));
+	else if (*ap_str == 'u')
+		return (ft_putnbr_p ((unsigned int)va_arg (ap, int), backup));
+	else if (*ap_str == 'x')
+		return (ft_putnbr_base ((unsigned int)va_arg (ap, int), backup, 0));
+	else if (*ap_str == 'X')
+		return (ft_putnbr_base ((unsigned int)va_arg (ap, int), backup, 1));
+	else if (*ap_str == '%')
+		return (ft_putchar ('%', backup));
+	return (0);
 }
 
-int	va_printf(va_list ap, char **string, char *original)
+void	ft_rev_int_tab(char *tab, int size)
+{
+	int	tmp;
+	int	j;
+	int	i;
+
+	i = size / 2;
+	j = 0;
+	while (i > 0)
+	{
+		tmp = tab[size - 1];
+		tab[size - 1] = tab[j];
+		tab[j] = tmp;
+		size--;
+		i--;
+		j++;
+	}
+}
+
+int	va_printf(va_list ap, t_backup *backup, char *original)
 {
 	char	*ap_str;
 	int		i;
@@ -135,13 +88,15 @@ int	va_printf(va_list ap, char **string, char *original)
 		count = i;
 		while (ap_str[i] != '%' && ap_str[i] != '\0')
 			i++;
-		string = ft_strjoin (string, ft_strdup (&ap_str[count]));
-		if (string == NULL)
+		backup->string = ft_strjoin (backup,
+				ft_strdup (&ap_str[count]), i - count);
+		if (backup->string == NULL)
 			return (0);
+		backup->s_idx = backup->s_idx + (i - count);
 		if (ap_str[i] == '%')
 		{
 			if (is_type ((ap_str[++i])))
-				cpy_type (ap, string, &i, &ap_str[i]);
+				cpy_type (ap, backup, &ap_str[i]);
 			i++;
 		}
 	}
@@ -151,15 +106,23 @@ int	va_printf(va_list ap, char **string, char *original)
 int	ft_printf(const char *str, ...)
 {
 	va_list			ap;
-	static char		*string;
+	static t_backup	*backup;
 	int				i;
 
+	backup = (t_backup *)malloc (sizeof (t_backup));
+	if (backup == NULL)
+		return (0);
+	backup->string = (char *)malloc (1);
+	if (!backup->string)
+		return (0);
+	backup->string[0] = '\0';
+	backup->s_idx = 0;
 	i = 0;
-	string = "";
 	va_start (ap, str);
-	va_printf (ap, &string, (char *)str);
+	va_printf (ap, backup, (char *)str);
 	va_end (ap);
-	while (string[i])
-		write (1, &string[i++], 1);
+	i = write (1, backup->string, backup->s_idx);
+	free (backup->string);
+	free (backup);
 	return (i);
 }

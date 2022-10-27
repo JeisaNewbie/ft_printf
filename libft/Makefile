@@ -6,7 +6,7 @@
 #    By: jhwang2 <jhwang2@student.42seoul.k>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/20 14:45:57 by jhwang2           #+#    #+#              #
-#    Updated: 2022/07/20 18:51:21 by jhwang2          ###   ########.fr        #
+#    Updated: 2022/10/26 19:51:02 by jhwang2          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,10 @@ SRC			=	ft_memset.c ft_bzero.c ft_memcpy.c\
 				ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c\
 				ft_toupper.c ft_tolower.c ft_calloc.c ft_strdup.c\
 				\
-				ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c\
-				ft_itoa.c ft_strmapi.c ft_putchar_fd.c ft_putstr_fd.c\
-				ft_putendl_fd.c ft_putnbr_fd.c ft_striteri.c
+				ft_substr.c ft_strtrim.c ft_split.c\
+				ft_itoa.c ft_strmapi.c \
+				ft_putendl_fd.c ft_putnbr_fd.c ft_striteri.c\
+				ft_putchar_fd.c ft_putstr_fd.c
 OBJ			=	$(SRC:.c=.o)
 
 INCLUDE		=	./libft.h
