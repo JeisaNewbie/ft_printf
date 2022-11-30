@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jhwang2 <jhwang2@student.42seoul.k>        +#+  +:+       +#+        */
+/*   By: jhwang2 <jhwang2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 16:54:13 by jhwang2           #+#    #+#             */
-/*   Updated: 2022/10/27 16:54:52 by jhwang2          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:00:04 by jhwang2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "ft_printf.h"
 
 int	ft_putnbr_base_m(unsigned long long nbr, t_backup *backup)
@@ -71,6 +72,7 @@ int	ft_putnbr_p(long long n, t_backup *backup)
 		recursion_p (n, tmp, &i);
 	tmp[i] = '\0';
 	backup->string = ft_strjoin (backup, tmp, i);
+	free (tmp);
 	if (backup->string == NULL)
 		return (0);
 	backup->s_idx = backup->s_idx + i;

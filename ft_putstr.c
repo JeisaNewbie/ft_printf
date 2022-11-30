@@ -1,14 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jhwang2 <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jhwang2 <jhwang2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 09:38:38 by jhwang2           #+#    #+#             */
-/*   Updated: 2022/10/26 20:15:46 by jhwang2          ###   ########.fr       */
+/*   Updated: 2022/11/30 14:59:50 by jhwang2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "ft_printf.h"
 
 int	ft_putstr(char *s, t_backup *backup)
@@ -31,6 +32,7 @@ int	ft_putstr(char *s, t_backup *backup)
 	}
 	tmp[i] = '\0';
 	backup->string = ft_strjoin (backup, tmp, i);
+	free (tmp);
 	if (backup->string == NULL)
 		return (0);
 	backup->s_idx = backup->s_idx + i;

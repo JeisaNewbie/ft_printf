@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jhwang2 <jhwang2@student.42seoul.k>        +#+  +:+       +#+        */
+/*   By: jhwang2 <jhwang2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 22:07:45 by jhwang2           #+#    #+#             */
-/*   Updated: 2022/10/26 20:17:16 by jhwang2          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:00:17 by jhwang2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdlib.h>
+
 #include "ft_printf.h"
 
 char	*ft_strjoin(t_backup *backup, char *s2, int s2_idx)
@@ -34,6 +34,5 @@ char	*ft_strjoin(t_backup *backup, char *s2, int s2_idx)
 	}
 	tmp[backup->s_idx + s2_idx] = '\0';
 	free (backup->string);
-	free (s2);
 	return (tmp);
 }

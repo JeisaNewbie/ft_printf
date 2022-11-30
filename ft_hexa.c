@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_hexa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jhwang2 <jhwang2@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jhwang2 <jhwang2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 21:56:40 by jhwang2           #+#    #+#             */
-/*   Updated: 2022/10/27 17:23:10 by jhwang2          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:00:02 by jhwang2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "ft_printf.h"
 
 void	recursion_h(unsigned long long nb, char *tmp, int *i, char *base)
@@ -33,6 +34,7 @@ int	ft_putnbr_h(unsigned int n, t_backup *backup, char *base)
 	recursion_h (n, tmp, &i, base);
 	tmp[i] = '\0';
 	backup->string = ft_strjoin (backup, tmp, i);
+	free (tmp);
 	if (backup->string == NULL)
 		return (0);
 	backup->s_idx = backup->s_idx + i;
@@ -82,6 +84,7 @@ int	hexa_m(unsigned long long decimal, t_backup *backup, char *base)
 		recursion_h(decimal, tmp, &i, base);
 	tmp[i] = '\0';
 	backup->string = ft_strjoin (backup, tmp, i);
+	free (tmp);
 	if (backup->string == NULL)
 		return (0);
 	backup->s_idx = backup->s_idx + i;

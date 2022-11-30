@@ -1,14 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jhwang2 <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jhwang2 <jhwang2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 09:37:40 by jhwang2           #+#    #+#             */
-/*   Updated: 2022/10/26 20:16:02 by jhwang2          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:00:07 by jhwang2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "ft_printf.h"
 
 int	ft_putchar(char c, t_backup *backup)
@@ -21,6 +22,7 @@ int	ft_putchar(char c, t_backup *backup)
 	tmp[0] = c;
 	tmp[1] = '\0';
 	backup->string = ft_strjoin (backup, tmp, 1);
+	free (tmp);
 	if (backup->string == NULL)
 		return (0);
 	backup->s_idx++;

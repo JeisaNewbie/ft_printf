@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jhwang2 <jhwang2@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jhwang2 <jhwang2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 21:56:40 by jhwang2           #+#    #+#             */
-/*   Updated: 2022/10/27 17:47:55 by jhwang2          ###   ########.fr       */
+/*   Updated: 2022/11/30 14:59:59 by jhwang2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "ft_printf.h"
 
 int	is_type(char c)
@@ -77,26 +78,24 @@ void	ft_rev_int_tab(char *tab, int size)
 
 int	va_printf(va_list ap, t_backup *backup, char *original)
 {
-	char	*ap_str;
 	int		i;
 	int		count;
 
 	i = 0;
-	ap_str = original;
-	while (ap_str[i] != '\0')
+	while (original[i] != '\0')
 	{
 		count = i;
-		while (ap_str[i] != '%' && ap_str[i] != '\0')
+		while (original[i] != '%' && original[i] != '\0')
 			i++;
 		backup->string = ft_strjoin (backup,
-				ft_strdup (&ap_str[count]), i - count);
+				original + count, i - count);
 		if (backup->string == NULL)
 			return (0);
 		backup->s_idx = backup->s_idx + (i - count);
-		if (ap_str[i] == '%')
+		if (original[i] == '%')
 		{
-			if (is_type ((ap_str[++i])))
-				cpy_type (ap, backup, &ap_str[i]);
+			if (is_type ((original[++i])))
+				cpy_type (ap, backup, &original[i]);
 			i++;
 		}
 	}
